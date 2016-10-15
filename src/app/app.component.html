@@ -4,9 +4,8 @@
 
 <router-outlet></router-outlet>
 
-<div> {{ (af.auth | async)?.uid }} </div>
-
-<button (click)="login()">Login</button>
-<button (click)="logout()">Logout</button>
+<!--<div> {{ (af.auth | async)?.uid }} </div>-->
+<div> UID: {{ authService.user }} </div>
+<button (click)="signOut()">Logout</button>
 
 <div> {{ response | json }} </div>

@@ -9,15 +9,17 @@ import { routing, appRoutingProviders }  from './app.routing';
 import { LoginComponent } from './login/login.component';
 import { PropertyComponent } from './property/property.component';
 import { ListingComponent } from './listing/listing.component';
+import { AuthGuardService } from './shared/auth-guard.service';
+import { AuthService } from './shared/auth.service';
 
-const myFirebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
   authDomain: 'apartment-price-tracker.firebaseapp.com',
   databaseURL: 'https://apartment-price-tracker.firebaseio.com',
   storageBucket: 'apartment-price-tracker.appspot.com',
 };
 
-const myFirebaseAuthConfig = {
+const firebaseAuthConfig = {
   provider: AuthProviders.Google,
   method: AuthMethods.Redirect
 };
@@ -35,9 +37,13 @@ const myFirebaseAuthConfig = {
     FormsModule,
     HttpModule,
     routing,
-    AngularFireModule.initializeApp(myFirebaseConfig, myFirebaseAuthConfig)
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
   ],
-  providers: [appRoutingProviders],
+  providers: [
+    appRoutingProviders,
+    AuthService,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
