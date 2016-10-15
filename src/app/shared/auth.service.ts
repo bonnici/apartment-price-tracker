@@ -28,6 +28,5 @@ export class AuthService {
 
   public signOut(): void {
     this.firebaseAuth.logout();
-    this.router.navigate(['login'])
   }
 }

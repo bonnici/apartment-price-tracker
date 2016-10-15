@@ -11,6 +11,7 @@ import { PropertyComponent } from './property/property.component';
 import { ListingComponent } from './listing/listing.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
+import { Ng2MdlModule } from 'ng2-mdl/ng2-mdl';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -37,7 +38,8 @@ const firebaseAuthConfig = {
     FormsModule,
     HttpModule,
     routing,
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig)
+    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    Ng2MdlModule
   ],
   providers: [
     appRoutingProviders,
