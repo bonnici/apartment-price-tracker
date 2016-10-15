@@ -14,11 +14,10 @@ export class AppComponent implements OnInit {
   constructor(public af: AngularFire, private http: Http) {}
 
   public ngOnInit() {
-    this.http.get('https://services.realestate.com.au/services/listings/419534970')
+    /*this.http.get('https://services.realestate.com.au/services/listings/419534970')
       .subscribe(
         (response) => this.response = response.json(),
-        (err) => this.response = { err: err });
-
+        (err) => this.response = { err: err });*/
   }
 
   public login() {

@@ -4,6 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AuthProviders, AuthMethods, AngularFireModule } from 'angularfire2';
 import { AppComponent } from './app.component';
+import { PropertiesComponent } from './properties/properties.component';
+import { routing, appRoutingProviders }  from './app.routing';
+import { LoginComponent } from './login/login.component';
+import { PropertyComponent } from './property/property.component';
+import { ListingComponent } from './listing/listing.component';
 
 const myFirebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -19,15 +24,20 @@ const myFirebaseAuthConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PropertiesComponent,
+    LoginComponent,
+    PropertyComponent,
+    ListingComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    routing,
     AngularFireModule.initializeApp(myFirebaseConfig, myFirebaseAuthConfig)
   ],
-  providers: [],
+  providers: [appRoutingProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
