@@ -12,6 +12,8 @@ import { ListingComponent } from './listing/listing.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
 import { Ng2MdlModule } from 'ng2-mdl/ng2-mdl';
+import { AddPropertyComponent } from './add-property/add-property.component';
+import { RealestateService } from './shared/realestate.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -31,7 +33,8 @@ const firebaseAuthConfig = {
     PropertiesComponent,
     LoginComponent,
     PropertyComponent,
-    ListingComponent
+    ListingComponent,
+    AddPropertyComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,8 @@ const firebaseAuthConfig = {
   providers: [
     appRoutingProviders,
     AuthService,
-    AuthGuardService
+    AuthGuardService,
+    RealestateService
   ],
   bootstrap: [AppComponent]
 })

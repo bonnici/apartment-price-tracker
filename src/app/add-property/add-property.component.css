@@ -1,0 +1,3 @@
+md-input.showError >>> .mdl-textfield__error {
+  visibility: visible !important;
+}

@@ -1,0 +1,38 @@
+<md-input
+  placeholder="realestate.com.au URL"
+  errMsg="{{ realestateUrlError }}"
+  [class.showError]="realestateUrlError"
+  [(ngModel)]="realestateUrl">
+</md-input>
+<mdlButton color="primary" (click)="findProperty()">Find Property</mdlButton>
+
+<div *ngIf="foundListing">
+  <p>Address: <a target="_blank" href="{{ foundListing.prettyUrl }}">{{ foundListing.address }}</a></p>
+  <p>Lat/Long: {{ foundListing.lat }}/{{ foundListing.long }}</p>
+
+  <p>
+    <md-input placeholder="latitude start" type="number" [(ngModel)]="searchLatStart"></md-input>
+    <md-input placeholder="latitude end" type="number" [(ngModel)]="searchLatEnd"></md-input>
+    <md-input placeholder="longitude start" type="number" [(ngModel)]="searchLongStart"></md-input>
+    <md-input placeholder="longitude end" type="number" [(ngModel)]="searchLongEnd"></md-input>
+  </p>
+  <mdlButton color="primary" (click)="searchForLatLong()">Update</mdlButton>
+
+  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric">Address</th>
+        <th class="mdl-data-table__cell--non-numeric">Bed/Bath/Parking</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let listing of searchResultListings">
+        <td class="mdl-data-table__cell--non-numeric"><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.address }}</a></td>
+        <td class="mdl-data-table__cell--non-numeric">{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
+        <td>${{ listing.price }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
