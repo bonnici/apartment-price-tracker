@@ -92,9 +92,16 @@
       </div>
 
       <div class="center-align col s12">
-        <button type="submit" class="waves-effect btn">Start Watching Property</button>
+        <button *ngIf="!addingProperty" type="submit" class="waves-effect btn">Start Watching Property</button>
+        <button *ngIf="addingProperty" class="btn disabled"><app-loading-spinner [small]="true"></app-loading-spinner></button>
       </div>
     </form>
+
+    <div *ngIf="addPropertyError" class="error row">
+      <div class="center-align col s12">
+        {{ addPropertyError }}
+      </div>
+    </div>
   </div>
 
 </div>

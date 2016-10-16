@@ -16,6 +16,7 @@ import { AuthService } from './shared/auth.service';
 import { AddPropertyComponent } from './add-property/add-property.component';
 import { RealestateService } from './shared/realestate.service';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { FirebaseDataService } from './shared/firebase-data.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -52,7 +53,8 @@ const firebaseAuthConfig = {
     appRoutingProviders,
     AuthService,
     AuthGuardService,
-    RealestateService
+    RealestateService,
+    FirebaseDataService
   ],
   bootstrap: [AppComponent]
 })

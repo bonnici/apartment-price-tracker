@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
+import { Input } from '@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'app-loading-spinner',
   template: `
-    <div class="preloader-wrapper big active">
+    <div class="preloader-wrapper active" [class.big]="!small" [class.small]="small">
         <div class="spinner-layer spinner-blue-only">
           <div class="circle-clipper left">
             <div class="circle"></div>
@@ -18,4 +19,5 @@ import { Component } from '@angular/core';
       </div>`
 })
 export class LoadingSpinnerComponent {
+  @Input() public small: boolean;
 }

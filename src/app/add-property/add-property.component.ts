@@ -1,7 +1,9 @@
 import { Component, ElementRef } from '@angular/core';
 import { RealestateService, Listing } from '../shared/realestate.service';
 import { ViewChild } from '@angular/core/src/metadata/di';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FirebaseDataService, PropertyData, ListingData, ListingScrape } from '../shared/firebase-data.service';
+import { Router } from '@angular/router';
 
 declare var noUiSlider: any;
 declare var wNumb: any;
@@ -20,11 +22,14 @@ export class AddPropertyComponent {
   public searchResultListings: Listing[] = [];
   public searchResultListingError = "";
   public addPropertyForm: FormGroup;
+  public addingProperty = false;
+  public addPropertyError = "";
 
   @ViewChild('latSlider') latSlider: ElementRef;
   @ViewChild('longSlider') longSlider: ElementRef;
 
-  constructor(private realestateService: RealestateService, fb: FormBuilder) {
+  constructor(private realestateService: RealestateService, private dataService: FirebaseDataService, private router: Router,
+              fb: FormBuilder) {
     this.addPropertyForm = fb.group({
       propertyName: ['', Validators.required],
       propertyNotes: ['']
@@ -53,7 +58,46 @@ export class AddPropertyComponent {
   }
 
   public addProperty() {
-    console.log('adding', this.addPropertyForm.value.propertyName, this.addPropertyForm.value.propertyNotes, this.latStart, this.latEnd, this.longStart, this.longEnd);
+    let propertyData = new PropertyData();
+    propertyData.propertyName = this.addPropertyForm.value.propertyName;
+    propertyData.propertyNotes = this.addPropertyForm.value.propertyNotes;
+    propertyData.latStart = this.latStart;
+    propertyData.latEnd = this.latEnd;
+    propertyData.longStart = this.longStart;
+    propertyData.longEnd = this.longEnd;
+    propertyData.listings = this.searchResultListings.map((listing) => this.listingToListingData(listing));
+
+    this.addingProperty = true;
+    this.addPropertyError = "";
+    this.dataService.addProperty(propertyData)
+      .then(() => {
+        this.addingProperty = false;
+        this.router.navigate([''])
+      })
+      .catch((err) => {
+        console.error("Error storing property data", err);
+        this.addingProperty = false;
+        this.addPropertyError = "Error storing property data" + err;
+      });
+  }
+
+  private listingToListingData(listing: Listing): ListingData {
+    let listingData = new ListingData();
+    listingData.id = listing.id;
+    listingData.prettyUrl = listing.prettyUrl;
+    listingData.streetAddress = listing.streetAddress;
+    listingData.locality = listing.locality;
+    listingData.postCode = listing.postCode;
+    listingData.beds = listing.beds;
+    listingData.baths = listing.baths;
+    listingData.parking = listing.parking;
+
+    let listingScrape = new ListingScrape();
+    listingScrape.price = listing.price;
+    listingScrape.time = new Date().getTime();
+    listingData.scrapes = [listingScrape];
+
+    return listingData;
   }
 
   private searchForLatLong() {

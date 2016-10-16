@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
 })
 export class PropertiesComponent {
 
+  //todo redirect to add-property if there are 0 for the current user
   constructor() { }
 }
