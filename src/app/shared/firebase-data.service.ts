@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFire } from 'angularfire2';
+import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { UUID } from 'angular2-uuid';
 import { AuthService } from './auth.service';
 
@@ -41,5 +41,9 @@ export class FirebaseDataService {
 
     let propertiesStore = this.af.database.object(`/users/${this.authService.userId}/properties/${data.id}`);
     return propertiesStore.set(data);
+  }
+
+  public getProperties(): FirebaseListObservable<PropertyData[]> {
+    return this.af.database.list(`/users/${this.authService.userId}/properties`);
   }
 }

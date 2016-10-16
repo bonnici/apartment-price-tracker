@@ -3,3 +3,7 @@
     <a class="waves-effect waves-light btn" routerLink="add-property">Add new property</a>
   </div>
 </div>
+
+<p *ngFor="let property of properties">
+  {{property.id}}
+</p>
