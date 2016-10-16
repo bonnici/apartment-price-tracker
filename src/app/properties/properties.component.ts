@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseDataService, PropertyData, ListingData } from '../shared/firebase-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import 'moment-timezone';
+import { RealestateService } from '../shared/realestate.service';
+import { ListingConverterService } from '../shared/listing-converter.service';
 
 @Component({
   selector: 'app-properties',
@@ -18,7 +21,8 @@ export class PropertiesComponent implements OnInit {
   public deletingProperty = false;
   public updatePropertyError: string;
 
-  constructor(private dataService: FirebaseDataService, fb: FormBuilder) {
+  constructor(private dataService: FirebaseDataService, private realestateService: RealestateService,
+              private listingConverterService: ListingConverterService, fb: FormBuilder) {
     this.updatePropertyForm = fb.group({
       propertyName: ['', Validators.required],
       propertyNotes: ['']
@@ -52,7 +56,8 @@ export class PropertiesComponent implements OnInit {
     this.selectedProperty.propertyNotes = this.updatePropertyForm.value.propertyNotes;
 
     this.updatingProperty = true;
-    this.dataService.updateProperty(this.selectedProperty)
+    this.updatePropertyError = "";
+    this.dataService.updatePropertyDetails(this.selectedProperty)
       .then(() => {
         this.updatingProperty = false;
       })
@@ -64,13 +69,46 @@ export class PropertiesComponent implements OnInit {
   }
 
   public refreshSelectedProperty() {
-    console.log("refreshSelectedProperty", this.selectedProperty);
+    let prop = this.selectedProperty;
+    this.updatingProperty = true;
+    this.updatePropertyError = "";
+    this.realestateService.findListingsByBoundingBox(prop.latStart, prop.latEnd, prop.longStart, prop.longEnd)
+      .subscribe(
+        (realestateListings) => {
+          this.updatingProperty = false;
+
+          realestateListings.forEach((realestateListing) => {
+            let existingListing = this.findListing(prop.listings, realestateListing.id);
+            if (existingListing) {
+              existingListing.scrapes.push({ price: realestateListing.price, time: new Date().getTime() });
+            }
+            else {
+              prop.listings.push(this.listingConverterService.realestateListingToListingData(realestateListing));
+            }
+          });
+
+          this.dataService.updatePropertyListings(this.selectedProperty)
+            .then(() => {
+              this.updatingProperty = false;
+            })
+            .catch((err) => {
+              console.error("Error updating property listings", err);
+              this.updatingProperty = false;
+              this.updatePropertyError = "Error updating property data" + err;
+            });
+        },
+        (err) => {
+          this.updatingProperty = false;
+          this.updatePropertyError = err;
+        }
+      );
   }
 
   public deleteSelectedProperty(property: PropertyData) {
     console.log("deleteSelectedProperty", this.selectedProperty);
 
     this.updatingProperty = true;
+    this.updatePropertyError = "";
     this.dataService.deleteProperty(this.selectedProperty)
       .then(() => {
         this.updatingProperty = false;
@@ -109,11 +147,28 @@ export class PropertiesComponent implements OnInit {
       maxTime = Math.max(maxTime, scrape.time);
     });
 
-    if (minTime === maxTime) {
-      return moment(minTime).format('DD/MM/YYYY');
+    let minTimeMoment: any = moment(minTime); // workaround to figuring out moment-timezone typings
+    let maxTimeMoment: any = moment(maxTime);
+    let formattedMinTime = minTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
+    let formattedMaxTime = maxTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
+
+    if (formattedMinTime === formattedMaxTime) {
+      return formattedMinTime;
     }
     else {
-      return `${moment(minTime).format('DD/MM/YYYY')} - ${moment(maxTime).format('DD/MM/YYYY')}`;
+      return `${formattedMinTime} - ${formattedMaxTime}`;
     }
+  }
+
+  private findListing(listings: ListingData[], listingId: string) {
+    let foundListing: ListingData = null;
+
+    listings.forEach((listing) => {
+      if (listing.id === listingId) {
+        foundListing = listing;
+      }
+    });
+
+    return foundListing;
   }
 }

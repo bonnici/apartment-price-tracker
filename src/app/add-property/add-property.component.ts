@@ -4,6 +4,7 @@ import { ViewChild } from '@angular/core/src/metadata/di';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FirebaseDataService, PropertyData, ListingData, ListingScrape } from '../shared/firebase-data.service';
 import { Router } from '@angular/router';
+import { ListingConverterService } from '../shared/listing-converter.service';
 
 declare var noUiSlider: any;
 declare var wNumb: any;
@@ -29,7 +30,7 @@ export class AddPropertyComponent {
   @ViewChild('longSlider') longSlider: ElementRef;
 
   constructor(private realestateService: RealestateService, private dataService: FirebaseDataService, private router: Router,
-              fb: FormBuilder) {
+              private listingConverterService: ListingConverterService, fb: FormBuilder) {
     this.addPropertyForm = fb.group({
       propertyName: ['', Validators.required],
       propertyNotes: ['']
@@ -65,7 +66,7 @@ export class AddPropertyComponent {
     propertyData.latEnd = this.latEnd;
     propertyData.longStart = this.longStart;
     propertyData.longEnd = this.longEnd;
-    propertyData.listings = this.searchResultListings.map((listing) => this.listingToListingData(listing));
+    propertyData.listings = this.searchResultListings.map((listing) => this.listingConverterService.realestateListingToListingData(listing));
 
     this.addingProperty = true;
     this.addPropertyError = "";
@@ -79,25 +80,6 @@ export class AddPropertyComponent {
         this.addingProperty = false;
         this.addPropertyError = "Error storing property data" + err;
       });
-  }
-
-  private listingToListingData(listing: Listing): ListingData {
-    let listingData = new ListingData();
-    listingData.id = listing.id;
-    listingData.prettyUrl = listing.prettyUrl;
-    listingData.streetAddress = listing.streetAddress;
-    listingData.locality = listing.locality;
-    listingData.postCode = listing.postCode;
-    listingData.beds = listing.beds;
-    listingData.baths = listing.baths;
-    listingData.parking = listing.parking;
-
-    let listingScrape = new ListingScrape();
-    listingScrape.price = listing.price;
-    listingScrape.time = new Date().getTime();
-    listingData.scrapes = [listingScrape];
-
-    return listingData;
   }
 
   private searchForLatLong() {
