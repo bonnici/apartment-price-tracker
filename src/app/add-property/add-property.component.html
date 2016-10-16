@@ -3,7 +3,7 @@
     <input id="realestateUrl" type="text" [(ngModel)]="realestateUrl">
     <label for="realestateUrl">realestate.com.au URL</label>
     <div class="center-align">
-      <button class="waves-effect btn" (click)="findProperty()">Find Property</button>
+      <button class="btn" (click)="findProperty()">Find Property</button>
     </div>
   </div>
 </div>
@@ -64,7 +64,7 @@
         <thead>
         <tr>
           <th>Address</th>
-          <th>Bad/Bath/Parking</th>
+          <th>Bed/Bath/Park</th>
           <th>Price</th>
         </tr>
         </thead>
@@ -81,18 +81,18 @@
 
   <div class="row">
     <form [formGroup]="addPropertyForm" (ngSubmit)="addProperty()">
-      <div class="input-field col s12">
+      <div class="input-field col s12 m6">
         <input id="propertyName" type="text" required formControlName="propertyName">
         <label for="propertyName" [class.active]="addPropertyForm.value.propertyName">Property Name</label>
       </div>
 
-      <div class="input-field col s12">
+      <div class="input-field col s12 m6">
         <input id="propertyNotes" type="text" formControlName="propertyNotes">
         <label for="propertyNotes" [class.active]="addPropertyForm.value.propertyNotes">Notes</label>
       </div>
 
       <div class="center-align col s12">
-        <button *ngIf="!addingProperty" type="submit" class="waves-effect btn">Start Watching Property</button>
+        <button *ngIf="!addingProperty" type="submit" class="btn">Start Watching Property</button>
         <button *ngIf="addingProperty" class="btn disabled"><app-loading-spinner [small]="true"></app-loading-spinner></button>
       </div>
     </form>

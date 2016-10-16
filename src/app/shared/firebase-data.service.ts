@@ -43,7 +43,17 @@ export class FirebaseDataService {
     return propertiesStore.set(data);
   }
 
+  public updateProperty(data: PropertyData): firebase.Promise<void> {
+    let propertiesStore = this.af.database.object(`/users/${this.authService.userId}/properties/${data.id}`);
+    return propertiesStore.update({ propertyName: data.propertyName, propertyNotes: data.propertyNotes });
+  }
+
   public getProperties(): FirebaseListObservable<PropertyData[]> {
     return this.af.database.list(`/users/${this.authService.userId}/properties`);
+  }
+
+  public deleteProperty(data: PropertyData): firebase.Promise<void> {
+    let propertiesStore = this.af.database.object(`/users/${this.authService.userId}/properties/${data.id}`);
+    return propertiesStore.remove();
   }
 }

@@ -1,9 +1,103 @@
 <div class="row" style="padding-top:2em;">
   <div class="center-align col s12">
-    <a class="waves-effect waves-light btn" routerLink="add-property">Add new property</a>
+    <a class="waves-light btn" routerLink="add-property">Watch new property</a>
   </div>
 </div>
 
-<p *ngFor="let property of properties">
-  {{property.id}}
-</p>
+<div *ngIf="propertiesLoading">
+  <div class="row">
+    <div class="center-align col s12">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!propertiesLoading">
+  <div class="row">
+    <div class="col s12">
+      <h5>Watched properties</h5>
+
+      <table class="highlight property-list">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Notes</th>
+          <th class="right-align">Num Listings</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let property of properties" (click)="propertySelected(property)">
+          <td>{{ property.propertyName }}</td>
+          <td>{{ property.propertyNotes }}</td>
+          <td class="right-align">{{ property.listings.length }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedProperty">
+  <div class="row">
+    <div class="col s12">
+      <h5>Selected Property</h5>
+
+      <div class="row">
+        <form [formGroup]="updatePropertyForm" (ngSubmit)="!updatingProperty && updateSelectedProperty()">
+          <div class="input-field col s12 m6">
+            <input id="propertyName" type="text" required formControlName="propertyName">
+            <label for="propertyName" [class.active]="updatePropertyForm.value.propertyName">Property Name</label>
+          </div>
+
+          <div class="input-field col s12 m6">
+            <input id="propertyNotes" type="text" formControlName="propertyNotes">
+            <label for="propertyNotes" [class.active]="updatePropertyForm.value.propertyNotes">Notes</label>
+          </div>
+
+          <div class="center-align col s12">
+            <button type="submit" [class.disabled]="updatingProperty" class="btn">Update</button>
+            <button class="btn" [class.disabled]="updatingProperty" (click)="!updatingProperty && refreshSelectedProperty()">Refresh Listings</button>
+            <button class="red btn" [class.disabled]="updatingProperty" (click)="!updatingProperty && deleteSelectedProperty()">Delete</button>
+          </div>
+        </form>
+
+        <div *ngIf="updatingProperty" class="row">
+          <div class="center-align col s12">
+            <app-loading-spinner [small]="true"></app-loading-spinner>
+          </div>
+        </div>
+
+        <div *ngIf="updatePropertyError" class="error row">
+          <div class="center-align col s12">
+            {{ updatePropertyError }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h5>Listings</h5>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Address</th>
+                <th>Bed/Bath/Park</th>
+                <th>Price</th>
+                <th>Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let listing of selectedProperty.listings">
+                <td><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
+                <td>{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
+                <td>{{ getPriceRange(listing) }}</td>
+                <td>{{ getAvailabilityRange(listing) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

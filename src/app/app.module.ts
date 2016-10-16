@@ -9,8 +9,6 @@ import { AppComponent } from './app.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { routing, appRoutingProviders }  from './app.routing';
 import { LoginComponent } from './login/login.component';
-import { PropertyComponent } from './property/property.component';
-import { ListingComponent } from './listing/listing.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
 import { AddPropertyComponent } from './add-property/add-property.component';
@@ -35,8 +33,6 @@ const firebaseAuthConfig = {
     AppComponent,
     PropertiesComponent,
     LoginComponent,
-    PropertyComponent,
-    ListingComponent,
     AddPropertyComponent,
     LoadingSpinnerComponent
   ],

@@ -1,0 +1,7 @@
+table.property-list tbody tr {
+  cursor: pointer;
+}
+
+.error.row {
+  color: #F44336;
+}
