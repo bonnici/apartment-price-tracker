@@ -1,8 +1,8 @@
 <nav>
   <div class="nav-wrapper">
-    <a href="#" class="brand-logo">Apartment Price Tracker</a>
+    <a routerLink="" class="brand-logo">Apartment Price Tracker</a>
     <ul class="right">
-      <li *ngIf="authService.authenticated"><a href="" (click)="signOut()">Sign Out</a></li>
+      <li *ngIf="authService.authenticated"><a href="#" (click)="signOut()">Sign Out</a></li>
     </ul>
   </div>
 </nav>
