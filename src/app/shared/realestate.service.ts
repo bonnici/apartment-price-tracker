@@ -5,7 +5,9 @@ import { Observable } from 'rxjs/Observable';
 export class Listing {
   public id: string;
   public prettyUrl: string;
-  public address: string;
+  public streetAddress: string;
+  public locality: string;
+  public postCode: string;
   public lat: number;
   public long: number;
   public beds: number;
@@ -70,7 +72,9 @@ export class RealestateService {
     return {
       id: json.listingId,
       prettyUrl: json._links.prettyUrl.href,
-      address: `${json.address.streetAddress}, ${json.address.locality} ${json.address.postCode}`,
+      streetAddress: json.address.streetAddress,
+      locality: json.address.locality,
+      postCode: json.address.postCode,
       lat: json.address.location.latitude,
       long: json.address.location.longitude,
       beds: json.features.general.bedrooms,

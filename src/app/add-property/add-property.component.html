@@ -1,38 +1,108 @@
-<md-input
-  placeholder="realestate.com.au URL"
-  errMsg="{{ realestateUrlError }}"
-  [class.showError]="realestateUrlError"
-  [(ngModel)]="realestateUrl">
-</md-input>
-<mdlButton color="primary" (click)="findProperty()">Find Property</mdlButton>
+<div class="search row">
+  <div class="input-field col s12">
+    <input id="realestateUrl" type="text" [(ngModel)]="realestateUrl">
+    <label for="realestateUrl">realestate.com.au URL</label>
+    <div class="center-align">
+      <button class="waves-effect btn" (click)="findProperty()">Find Property</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="realestateUrlError" class="error row">
+  <div class="center-align col s12">
+    {{ realestateUrlError }}
+  </div>
+</div>
+
+<div *ngIf="searchingForSourceListing">
+  <div class="row">
+    <div class="center-align col s12">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+</div>
 
 <div *ngIf="foundListing">
-  <p>Address: <a target="_blank" href="{{ foundListing.prettyUrl }}">{{ foundListing.address }}</a></p>
-  <p>Lat/Long: {{ foundListing.lat }}/{{ foundListing.long }}</p>
+  <div class="row">
+    <div class="center-align col s12">
+      <h5>
+        Found <a target="_blank" href="{{ foundListing.prettyUrl }}">
+          {{ foundListing.streetAddress }}, {{ foundListing.locality }} {{ foundListing.postCode}}
+        </a>
+        <br/>
+      </h5>
+      <h6>(lat/long {{ foundListing.lat }}/{{ foundListing.long }})</h6>
+    </div>
+  </div>
+</div>
 
-  <p>
-    <md-input placeholder="latitude start" type="number" [(ngModel)]="searchLatStart"></md-input>
-    <md-input placeholder="latitude end" type="number" [(ngModel)]="searchLatEnd"></md-input>
-    <md-input placeholder="longitude start" type="number" [(ngModel)]="searchLongStart"></md-input>
-    <md-input placeholder="longitude end" type="number" [(ngModel)]="searchLongEnd"></md-input>
-  </p>
-  <mdlButton color="primary" (click)="searchForLatLong()">Update</mdlButton>
+<!-- Can't use ngIf since we need to be able to access the ElementRef when it's not on the page -->
+<div class="lat-long-slider row" [class.hidden]="!foundListing">
+  <p>Finding other listings at the same location (adjust latitude and longitude bounds if needed).</p>
+  <div class="col s6">
+    <label for="lat-slider">Latitude</label>
+    <div #latSlider id="lat-slider"></div>
+  </div>
+  <div class="col s6">
+    <label for="long-slider">Longitude</label>
+    <div #longSlider id="long-slider"></div>
+  </div>
+</div>
 
-  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
-    <thead>
-      <tr>
-        <th class="mdl-data-table__cell--non-numeric">Address</th>
-        <th class="mdl-data-table__cell--non-numeric">Bed/Bath/Parking</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let listing of searchResultListings">
-        <td class="mdl-data-table__cell--non-numeric"><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.address }}</a></td>
-        <td class="mdl-data-table__cell--non-numeric">{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
-        <td>${{ listing.price }}</td>
-      </tr>
-    </tbody>
-  </table>
+<div *ngIf="searchingForOtherListings">
+  <div class="row">
+    <div class="center-align col s12">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+</div>
 
+<div *ngIf="searchResultListings.length > 0">
+  <div class="row">
+    <div class="col s12">
+      <table>
+        <thead>
+        <tr>
+          <th>Address</th>
+          <th>Bad/Bath/Parking</th>
+          <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let listing of searchResultListings">
+          <td><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
+          <td>{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
+          <td>${{ listing.price }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <form [formGroup]="addPropertyForm" (ngSubmit)="addProperty()">
+      <div class="input-field col s12">
+        <input id="propertyName" type="text" required formControlName="propertyName">
+        <label for="propertyName" [class.active]="addPropertyForm.value.propertyName">Property Name</label>
+      </div>
+
+      <div class="input-field col s12">
+        <input id="propertyNotes" type="text" formControlName="propertyNotes">
+        <label for="propertyNotes" [class.active]="addPropertyForm.value.propertyNotes">Notes</label>
+      </div>
+
+      <div class="center-align col s12">
+        <button type="submit" class="waves-effect btn">Start Watching Property</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<div *ngIf="searchResultListingError">
+  <div class="error row">
+    <div class="center-align col s12">
+      {{ searchResultListingError }}
+    </div>
+  </div>
 </div>

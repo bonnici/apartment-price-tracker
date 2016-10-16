@@ -16,10 +16,13 @@
       "mobile": false,
       "styles": [
         "styles.css",
-        "../node_modules/material-design-lite/material.css"
+        "../node_modules/materialize-css/dist/css/materialize.css",
+        "../node_modules/materialize-css/extras/noUiSlider/nouislider.css"
       ],
       "scripts": [
-        "../node_modules/material-design-lite/material.js"
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/materialize-css/dist/js/materialize.js",
+        "../node_modules/materialize-css/extras/noUiSlider/nouislider.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

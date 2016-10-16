@@ -12,7 +12,8 @@ const appRoutes: Routes = [
   { path: '', component: PropertiesComponent, canActivate: [AuthGuardService] },
   { path: 'add-property', component: AddPropertyComponent, canActivate: [AuthGuardService] },
   { path: 'property/:id', component: PropertyComponent, canActivate: [AuthGuardService] },
-  { path: 'property/:propId/listing/:listingId', component: ListingComponent, canActivate: [AuthGuardService] }
+  { path: 'property/:propId/listing/:listingId', component: ListingComponent, canActivate: [AuthGuardService] },
+  { path: '**', redirectTo: '' }
 ];
 
 export const appRoutingProviders: any[] = [

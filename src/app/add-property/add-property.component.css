@@ -1,3 +1,24 @@
-md-input.showError >>> .mdl-textfield__error {
-  visibility: visible !important;
+.search.row {
+  padding-top: 3em;
+}
+
+.error.row {
+  color: #F44336;
+}
+
+:host >>> .range-label span {
+  color: black;
+}
+
+.lat-long-slider.hidden {
+  display: none;
+}
+
+.lat-long-slider.row label {
+  font-size: 1em;
+}
+
+table td {
+  padding-top: 8px;
+  padding-bottom: 8px;
 }

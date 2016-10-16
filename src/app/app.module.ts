@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AuthProviders, AuthMethods, AngularFireModule } from 'angularfire2';
+import { MaterializeModule } from 'angular2-materialize';
+import "materialize-css";
 import { AppComponent } from './app.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { routing, appRoutingProviders }  from './app.routing';
@@ -11,9 +13,9 @@ import { PropertyComponent } from './property/property.component';
 import { ListingComponent } from './listing/listing.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
-import { Ng2MdlModule } from 'ng2-mdl/ng2-mdl';
 import { AddPropertyComponent } from './add-property/add-property.component';
 import { RealestateService } from './shared/realestate.service';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -34,15 +36,17 @@ const firebaseAuthConfig = {
     LoginComponent,
     PropertyComponent,
     ListingComponent,
-    AddPropertyComponent
+    AddPropertyComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     routing,
     AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
-    Ng2MdlModule
+    MaterializeModule
   ],
   providers: [
     appRoutingProviders,
