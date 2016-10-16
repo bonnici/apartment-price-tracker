@@ -5,7 +5,6 @@
       <div class="mdl-layout-spacer"></div>
       <nav class="mdl-navigation">
         <a *ngIf="authService.authenticated" class="mdl-navigation__link" href="" (click)="signOut()">Sign Out</a>
-        <!--temp--><a *ngIf="!authService.authenticated" class="mdl-navigation__link" routerLink="login">Sign In</a>
       </nav>
     </div>
   </header>

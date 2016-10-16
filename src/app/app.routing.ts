@@ -9,13 +9,10 @@ import { AddPropertyComponent } from './add-property/add-property.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: AddPropertyComponent },
-  /*
   { path: '', component: PropertiesComponent, canActivate: [AuthGuardService] },
   { path: 'add-property', component: AddPropertyComponent, canActivate: [AuthGuardService] },
   { path: 'property/:id', component: PropertyComponent, canActivate: [AuthGuardService] },
   { path: 'property/:propId/listing/:listingId', component: ListingComponent, canActivate: [AuthGuardService] }
-  */
 ];
 
 export const appRoutingProviders: any[] = [

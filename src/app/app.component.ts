@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from './shared/auth.service';
 
 import 'rxjs/add/observable/throw';
@@ -12,12 +12,9 @@ import 'rxjs/add/operator/take';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   constructor(public authService: AuthService) {}
-
-  public ngOnInit() {
-  }
 
   public signOut() {
     this.authService.signOut();

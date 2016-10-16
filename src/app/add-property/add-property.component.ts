@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RealestateService, Listing } from '../shared/realestate.service';
 
 @Component({
@@ -7,7 +7,6 @@ import { RealestateService, Listing } from '../shared/realestate.service';
   styleUrls: ['./add-property.component.css']
 })
 export class AddPropertyComponent {
-
   public realestateUrl = "";
   public realestateUrlError = "";
   public foundListing: Listing;
