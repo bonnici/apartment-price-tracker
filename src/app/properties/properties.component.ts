@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import 'moment-timezone';
 import { RealestateService } from '../shared/realestate.service';
 import { ListingConverterService } from '../shared/listing-converter.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-properties',
@@ -46,6 +47,21 @@ export class PropertiesComponent implements OnInit {
     );
   }
 
+  public refreshAllProperties() {
+    // Error handling could go in here, for now just log any errors and ignore simultaneous updates
+    this.properties.forEach((property) => {
+      this.refreshProperty(property).subscribe(
+        () => {},
+        (err) => {
+          console.error("Error updating property listings", property, err);
+        },
+        () => {
+          console.log("Updated property listings", property);
+        }
+      );
+    });
+  }
+
   public propertySelected(property: PropertyData) {
     this.selectedProperty = property;
     this.updatePropertyForm.patchValue({ propertyName: property.propertyName, propertyNotes: property.propertyNotes });
@@ -69,44 +85,53 @@ export class PropertiesComponent implements OnInit {
   }
 
   public refreshSelectedProperty() {
-    let prop = this.selectedProperty;
     this.updatingProperty = true;
     this.updatePropertyError = "";
-    this.realestateService.findListingsByBoundingBox(prop.latStart, prop.latEnd, prop.longStart, prop.longEnd)
-      .subscribe(
-        (realestateListings) => {
-          this.updatingProperty = false;
 
-          realestateListings.forEach((realestateListing) => {
-            let existingListing = this.findListing(prop.listings, realestateListing.id);
-            if (existingListing) {
-              existingListing.scrapes.push({ price: realestateListing.price, time: new Date().getTime() });
-            }
-            else {
-              prop.listings.push(this.listingConverterService.realestateListingToListingData(realestateListing));
-            }
-          });
+    this.refreshProperty(this.selectedProperty).subscribe(
+      () => {},
+      (err) => {
+        console.error("Error updating property listings", err);
+        this.updatingProperty = false;
+        this.updatePropertyError = "Error updating property data" + err;
+      },
+      () => {
+        this.updatingProperty = false;
+      }
+    );
+  }
 
-          this.dataService.updatePropertyListings(this.selectedProperty)
-            .then(() => {
-              this.updatingProperty = false;
-            })
-            .catch((err) => {
-              console.error("Error updating property listings", err);
-              this.updatingProperty = false;
-              this.updatePropertyError = "Error updating property data" + err;
+  public refreshProperty(property: PropertyData): Observable<any> {
+    return new Observable((observer) => {
+      this.realestateService.findListingsByBoundingBox(property.latStart, property.latEnd, property.longStart, property.longEnd)
+        .subscribe(
+          (realestateListings) => {
+            realestateListings.forEach((realestateListing) => {
+              let existingListing = this.findListing(property.listings, realestateListing.id);
+              if (existingListing) {
+                existingListing.scrapes.push({price: realestateListing.price, time: new Date().getTime()});
+              }
+              else {
+                property.listings.push(this.listingConverterService.realestateListingToListingData(realestateListing));
+              }
             });
-        },
-        (err) => {
-          this.updatingProperty = false;
-          this.updatePropertyError = err;
-        }
-      );
+
+            this.dataService.updatePropertyListings(property)
+              .then(() => {
+                observer.complete();
+              })
+              .catch((err) => {
+                observer.error(err);
+              });
+          },
+          (err) => {
+            observer.error(err);
+          }
+        );
+    });
   }
 
   public deleteSelectedProperty(property: PropertyData) {
-    console.log("deleteSelectedProperty", this.selectedProperty);
-
     this.updatingProperty = true;
     this.updatePropertyError = "";
     this.dataService.deleteProperty(this.selectedProperty)
