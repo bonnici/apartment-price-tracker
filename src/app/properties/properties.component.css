@@ -5,3 +5,13 @@ table.property-list tbody tr {
 .error.row {
   color: #F44336;
 }
+
+.properties .notes {
+  font-size: 0.95em;
+  font-style: italic;
+}
+
+table.listings td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
