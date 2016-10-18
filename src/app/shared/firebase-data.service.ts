@@ -54,7 +54,11 @@ export class FirebaseDataService {
   }
 
   public getProperties(): FirebaseListObservable<PropertyData[]> {
-    return this.af.database.list(`/users/${this.authService.userId}/properties`);
+    return this.af.database.list(`/users/${this.authService.userId}/properties`, {
+      query: {
+        orderByChild: 'propertyName'
+      }
+    });
   }
 
   public deleteProperty(data: PropertyData): firebase.Promise<void> {
