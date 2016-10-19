@@ -15,3 +15,11 @@ table.listings td {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+table.listings td.buy {
+  color: #bf360c;
+}
+
+table.listings td.rent {
+  color: #006064;
+}

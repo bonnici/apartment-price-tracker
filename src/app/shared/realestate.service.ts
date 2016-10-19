@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 export class Listing {
   public id: string;
   public prettyUrl: string;
+  public channel: string;
   public streetAddress: string;
   public locality: string;
   public postCode: string;
@@ -47,8 +48,26 @@ export class RealestateService {
 
   // Returns a max of 50 results
   public findListingsByBoundingBox(latStart: number, latEnd: number, longStart: number, longEnd: number): Observable<Listing[]> {
-    let searchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd);
+    let rentSearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'rent');
+    let buySearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'buy');
 
+    //var rentResults = this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response));
+    //var buyResults = this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response));
+
+    return this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response))
+      .concat(this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response)))
+      .catch((err) => {
+        console.error("Error searching by bounding box", err);
+
+        if (err && err.status === 404) {
+          return Observable.throw("Listing not found");
+        }
+        else {
+          return Observable.throw("Error searching for properties");
+        }
+      });
+
+    /*
     return this.http.get(this.searchUrlPrefix + searchQuery)
       .map((response) => this.extractSearchResults(response))
       .catch((err) => {
@@ -61,6 +80,7 @@ export class RealestateService {
           return Observable.throw("Error searching for properties");
         }
       });
+      */
   }
 
   private extractListingData(res: Response): Listing {
@@ -72,28 +92,34 @@ export class RealestateService {
     return {
       id: json.listingId,
       prettyUrl: json._links.prettyUrl.href,
+      channel: json.channel,
       streetAddress: json.address.streetAddress,
       locality: json.address.locality,
       postCode: json.address.postCode,
       lat: json.address.location.latitude,
       long: json.address.location.longitude,
-      beds: json.features.general.bedrooms,
-      baths: json.features.general.bathrooms,
-      parking: json.features.general.parkingSpaces,
+      beds: json.features.general ? json.features.general.bedrooms : 0,
+      baths: json.features.general ? json.features.general.bathrooms : 0,
+      parking: json.features.general ? json.features.general.parkingSpaces : 0,
       price: this.parsePrice(json.price)
     };
   }
 
   private parsePrice(json: any): number {
+    if (!json) {
+      return 0;
+    }
+
     if (json.value) {
       return json.value;
     }
     else {
-      let matches = json.display.match(/\d+/);
+      let matches = json.display.match(/[\d,]+/);
       if (matches) {
-        return +matches[0];
+        var stripped = matches[0].replace(new RegExp(',', 'g'), '');
+        return +stripped; // Convert to number
       }
-      return null;
+      return 0;
     }
   }
 
@@ -121,9 +147,9 @@ export class RealestateService {
     return null;
   }
 
-  private generateSearchQuery(latStart: number, latEnd: number, longStart: number, longEnd: number): string {
+  private generateSearchQuery(latStart: number, latEnd: number, longStart: number, longEnd: number, channel: string): string {
     let query = {
-      channel: 'rent',
+      channel: channel,
       filters: {
         'surroundingSuburbs': false,
         'excludeTier2': true,

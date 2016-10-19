@@ -11,6 +11,7 @@ export class ListingScrape {
 export class ListingData {
   public id: string;
   public prettyUrl: string;
+  public channel: string;
   public streetAddress: string;
   public locality: string;
   public postCode: string;

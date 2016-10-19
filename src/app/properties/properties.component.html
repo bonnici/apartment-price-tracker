@@ -79,7 +79,7 @@
           <tr *ngFor="let listing of selectedProperty.listings">
             <td><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
             <td>{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
-            <td>{{ getPriceRange(listing) }}</td>
+            <td [class.rent]="listing.channel === 'rent' || !listing.channel" [class.buy]="listing.channel === 'buy'">{{ getPriceRange(listing) }}</td>
             <td>{{ getAvailabilityRange(listing) }}</td>
           </tr>
         </tbody>

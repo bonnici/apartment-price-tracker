@@ -8,6 +8,7 @@ export class ListingConverterService {
     let listingData = new ListingData();
     listingData.id = listing.id;
     listingData.prettyUrl = listing.prettyUrl;
+    listingData.channel = listing.channel;
     listingData.streetAddress = listing.streetAddress;
     listingData.locality = listing.locality;
     listingData.postCode = listing.postCode;

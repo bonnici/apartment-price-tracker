@@ -155,11 +155,14 @@ export class PropertiesComponent implements OnInit {
       maxPrice = Math.max(maxPrice, scrape.price);
     });
 
+    let minPriceString = minPrice < 10000 ? `$${minPrice}` : `$${minPrice/1000}k`;
+    let maxPriceString = maxPrice < 10000 ? `$${maxPrice}` : `$${maxPrice/1000}k`;
+
     if (minPrice === maxPrice) {
-      return `$${minPrice}`;
+      return minPriceString;
     }
     else {
-      return `$${minPrice} - $${maxPrice}`;
+      return `${minPriceString} - ${maxPriceString}`;
     }
   }
 
