@@ -1,8 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
-/*
-$var: #ff0000;
+$primary-color: #3F51B5 !default;
+$secondary-color: #448AFF !default;
 
-body {
-  color: $var;
-}
-*/
+$roboto-font-path: "../node_modules/materialize-css/fonts/roboto/";
+@import "../node_modules/materialize-css/sass/materialize";

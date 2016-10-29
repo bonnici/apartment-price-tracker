@@ -15,9 +15,8 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "../node_modules/materialize-css/dist/css/materialize.css",
-        "../node_modules/materialize-css/extras/noUiSlider/nouislider.css",
-        "styles.scss"
+        "styles.scss",
+        "../node_modules/materialize-css/extras/noUiSlider/nouislider.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
