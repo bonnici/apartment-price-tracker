@@ -6,12 +6,15 @@ table.property-list tbody tr {
   color: #F44336;
 }
 
-.properties .notes {
-  font-size: 0.95em;
-  font-style: italic;
+table.properties tbody tr {
+  cursor: pointer;
 }
 
-table.listings td {
+table.properties {
+  padding-bottom: 1em;
+}
+
+table.listings td, table.properties td {
   padding-top: 10px;
   padding-bottom: 10px;
 }

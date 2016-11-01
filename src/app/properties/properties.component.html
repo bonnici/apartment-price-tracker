@@ -11,15 +11,26 @@
     <div class="col s12">
       <h5>Watched properties</h5>
 
-      <div class="properties collection">
-        <a *ngFor="let property of properties" class="collection-item" [class.active]="selectedProperty === property" href="#"
-           (click)="$event.preventDefault() || propertySelected(property)">
-          {{ property.propertyName }} ({{ property.listings.length }} listings)
-          <span *ngIf="property.propertyNotes" class="notes">- {{ property.propertyNotes }}</span>
-        </a>
-      </div>
+      <table class="properties highlight">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Notes</th>
+            <th># Listings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let property of properties" (click)="$event.preventDefault() || propertySelected(property)">
+            <td>{{ property.propertyName }}</td>
+            <td>{{ property.propertyNotes }}</td>
+            <td>{{ property.listings.length }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
+  <div class="row">
     <div class="center-align col s12">
       <a class="waves-light btn" routerLink="add-property">Watch new property</a>
       <button class="waves-light btn" (click)="refreshAllProperties()">Refresh All Properties</button>
