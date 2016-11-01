@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div *ngIf="!propertiesLoading">
+<div *ngIf="!propertiesLoading && !selectedProperty">
   <div class="row">
     <div class="col s12">
       <h5>Watched properties</h5>
@@ -41,7 +41,16 @@
 <div *ngIf="selectedProperty">
   <div class="row">
     <div class="col s12">
-      <h5>Selected Property</h5>
+      <div class="center-align col s12">
+        <button class="btn-flat" (click)="goToPreviousProperty()">&lt;</button>
+        <button class="btn-flat" (click)="selectedProperty = null">Back</button>
+        <button class="btn-flat" (click)="goToNextProperty()">&gt;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col s12">
 
       <form [formGroup]="updatePropertyForm" (ngSubmit)="!updatingProperty && updateSelectedProperty()">
         <div class="input-field col s12 m6">

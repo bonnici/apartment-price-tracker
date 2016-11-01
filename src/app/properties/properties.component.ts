@@ -67,6 +67,26 @@ export class PropertiesComponent implements OnInit {
     this.updatePropertyForm.patchValue({ propertyName: property.propertyName, propertyNotes: property.propertyNotes });
   }
 
+  public goToPreviousProperty() {
+    let index = this.properties.indexOf(this.selectedProperty);
+    index--;
+
+    if (index < 0) {
+      index = this.properties.length - 1;
+    }
+    this.propertySelected(this.properties[index]);
+  }
+
+  public goToNextProperty() {
+    let index = this.properties.indexOf(this.selectedProperty);
+    index++;
+
+    if (index >= this.properties.length) {
+      index = 0;
+    }
+    this.propertySelected(this.properties[index]);
+  }
+
   public updateSelectedProperty() {
     this.selectedProperty.propertyName = this.updatePropertyForm.value.propertyName;
     this.selectedProperty.propertyNotes = this.updatePropertyForm.value.propertyNotes;
