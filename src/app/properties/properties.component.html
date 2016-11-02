@@ -36,6 +36,18 @@
       <button class="waves-light btn" (click)="refreshAllProperties()">Refresh All Properties</button>
     </div>
   </div>
+
+  <div *ngIf="refreshingAllProperties" class="row">
+    <div class="center-align col s12">
+      <app-loading-spinner [small]="true"></app-loading-spinner>
+    </div>
+  </div>
+
+  <div *ngIf="refreshAllPropertiesError" class="error row">
+    <div class="center-align col s12">
+      {{ refreshAllPropertiesError }}
+    </div>
+  </div>
 </div>
 
 <div *ngIf="selectedProperty">

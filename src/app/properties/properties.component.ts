@@ -19,8 +19,9 @@ export class PropertiesComponent implements OnInit {
   public selectedProperty: PropertyData;
   public updatePropertyForm: FormGroup;
   public updatingProperty = false;
-  public deletingProperty = false;
   public updatePropertyError: string;
+  public refreshingAllProperties = false;
+  public refreshAllPropertiesError: string;
 
   constructor(private dataService: FirebaseDataService, private realestateService: RealestateService,
               private listingConverterService: ListingConverterService, fb: FormBuilder) {
@@ -48,18 +49,22 @@ export class PropertiesComponent implements OnInit {
   }
 
   public refreshAllProperties() {
-    // Error handling could go in here, for now just log any errors and ignore simultaneous updates
+    var observables = [];
     this.properties.forEach((property) => {
-      this.refreshProperty(property).subscribe(
-        () => {},
-        (err) => {
-          console.error("Error updating property listings", property, err);
-        },
-        () => {
-          console.log("Updated property listings", property);
-        }
-      );
+      observables.push(this.refreshProperty(property));
     });
+
+    this.refreshingAllProperties = true;
+    this.refreshAllPropertiesError = "";
+    Observable.forkJoin(observables).subscribe(
+      () => {},
+      (err) => {
+        console.log("error", err);
+        this.refreshAllPropertiesError = "Error refreshing properties: " + err;
+        this.refreshingAllProperties = false;
+      },
+      () => this.refreshingAllProperties = false
+    );
   }
 
   public propertySelected(property: PropertyData) {
