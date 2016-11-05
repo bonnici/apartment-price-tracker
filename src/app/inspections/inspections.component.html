@@ -1,3 +1,22 @@
-<p>
-  inspections works!
-</p>
+<div>
+  <div class="row">
+    <div class="center-align col s12 m4 offset-m4 l2 offset-l5">
+      <label for="date">Select a Date</label>
+      <input id="date" type="text" name="date" /> <!--[value]="initialDateValue"-->
+    </div>
+  </div>
+</div>
+
+<div *ngIf="propertiesLoading">
+  <div class="row">
+    <div class="center-align col s12">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="getPropertiesError" class="error row">
+  <div class="center-align col s12">
+    {{ getPropertiesError }}
+  </div>
+</div>

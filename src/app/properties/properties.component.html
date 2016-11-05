@@ -6,6 +6,12 @@
   </div>
 </div>
 
+<div *ngIf="getPropertiesError" class="error row">
+  <div class="center-align col s12">
+    {{ getPropertiesError }}
+  </div>
+</div>
+
 <div *ngIf="!propertiesLoading && !selectedProperty">
   <div class="row">
     <div class="col s12">
