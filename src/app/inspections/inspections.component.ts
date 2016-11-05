@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FirebaseDataService, PropertyData } from '../shared/firebase-data.service';
 import 'jquery';
 
@@ -52,10 +52,7 @@ export class InspectionsComponent implements OnInit {
       format: 'dd/mm/yyyy',
       selectMonths: true,
       selectYears: 2,
-      min: new Date(),
-      onStart: function(x) {
-        console.log('onStart', x);
-      },
+      min: this.date,
       onClose: () => {
         $(document.activeElement).blur(); // https://github.com/amsul/pickadate.js/issues/160
         this.filterInspections();

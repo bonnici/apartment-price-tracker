@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { RealestateService, Listing } from '../shared/realestate.service';
 import { ViewChild } from '@angular/core/src/metadata/di';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { FirebaseDataService, PropertyData, ListingData, ListingScrape } from '../shared/firebase-data.service';
+import { FirebaseDataService, PropertyData } from '../shared/firebase-data.service';
 import { Router } from '@angular/router';
 import { ListingConverterService } from '../shared/listing-converter.service';
 
@@ -15,16 +15,16 @@ declare var wNumb: any;
   styleUrls: ['./add-property.component.css']
 })
 export class AddPropertyComponent {
-  public realestateUrl = "";
-  public realestateUrlError = "";
+  public realestateUrl = '';
+  public realestateUrlError = '';
   public searchingForSourceListing = false;
   public foundListing: Listing;
   public searchingForOtherListings = false;
   public searchResultListings: Listing[] = [];
-  public searchResultListingError = "";
+  public searchResultListingError = '';
   public addPropertyForm: FormGroup;
   public addingProperty = false;
-  public addPropertyError = "";
+  public addPropertyError = '';
 
   @ViewChild('latSlider') latSlider: ElementRef;
   @ViewChild('longSlider') longSlider: ElementRef;
@@ -66,34 +66,35 @@ export class AddPropertyComponent {
     propertyData.latEnd = this.latEnd;
     propertyData.longStart = this.longStart;
     propertyData.longEnd = this.longEnd;
-    propertyData.listings = this.searchResultListings.map((listing) => this.listingConverterService.realestateListingToListingData(listing));
+    propertyData.listings = this.searchResultListings.map(
+      (listing) => this.listingConverterService.realestateListingToListingData(listing));
 
     this.addingProperty = true;
-    this.addPropertyError = "";
+    this.addPropertyError = '';
     this.dataService.addProperty(propertyData)
       .then(() => {
         this.addingProperty = false;
-        this.router.navigate([''])
+        this.router.navigate(['']);
       })
       .catch((err) => {
-        console.error("Error storing property data", err);
+        console.error('Error storing property data', err);
         this.addingProperty = false;
-        this.addPropertyError = "Error storing property data" + err;
+        this.addPropertyError = 'Error storing property data' + err;
       });
   }
 
   private searchForLatLong() {
     this.searchingForOtherListings = true;
     this.searchResultListings = [];
-    this.searchResultListingError = "";
+    this.searchResultListingError = '';
     this.realestateService.findListingsByBoundingBox(this.latStart, this.latEnd, this.longStart, this.longEnd)
       .subscribe(
         (listings) => {
           this.searchingForOtherListings = false;
           this.searchResultListings = listings;
 
-          if (this.searchResultListings.length == 0) {
-            this.searchResultListingError = "Could not find any results";
+          if (this.searchResultListings.length === 0) {
+            this.searchResultListingError = 'Could not find any results';
           }
         },
         (err) => {

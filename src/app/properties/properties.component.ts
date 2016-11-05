@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 export class PropertiesComponent implements OnInit {
   public properties: PropertyData[];
   public propertiesLoading = false;
-  public getPropertiesError = "";
+  public getPropertiesError = '';
   public selectedProperty: PropertyData;
   public updatePropertyForm: FormGroup;
   public updatingProperty = false;
@@ -49,18 +49,18 @@ export class PropertiesComponent implements OnInit {
   }
 
   public refreshAllProperties() {
-    var observables = [];
+    let observables = [];
     this.properties.forEach((property) => {
       observables.push(this.refreshProperty(property));
     });
 
     this.refreshingAllProperties = true;
-    this.refreshAllPropertiesError = "";
+    this.refreshAllPropertiesError = '';
     Observable.forkJoin(observables).subscribe(
       () => {},
       (err) => {
-        console.error("error", err);
-        this.refreshAllPropertiesError = "Error refreshing properties: " + err;
+        console.error('error', err);
+        this.refreshAllPropertiesError = 'Error refreshing properties: ' + err;
         this.refreshingAllProperties = false;
       },
       () => this.refreshingAllProperties = false
@@ -97,28 +97,28 @@ export class PropertiesComponent implements OnInit {
     this.selectedProperty.propertyNotes = this.updatePropertyForm.value.propertyNotes;
 
     this.updatingProperty = true;
-    this.updatePropertyError = "";
+    this.updatePropertyError = '';
     this.dataService.updatePropertyDetails(this.selectedProperty)
       .then(() => {
         this.updatingProperty = false;
       })
       .catch((err) => {
-        console.error("Error updating property data", err);
+        console.error('Error updating property data', err);
         this.updatingProperty = false;
-        this.updatePropertyError = "Error updating property data" + err;
+        this.updatePropertyError = 'Error updating property data' + err;
       });
   }
 
   public refreshSelectedProperty() {
     this.updatingProperty = true;
-    this.updatePropertyError = "";
+    this.updatePropertyError = '';
 
     this.refreshProperty(this.selectedProperty).subscribe(
       () => {},
       (err) => {
-        console.error("Error updating property listings", err);
+        console.error('Error updating property listings', err);
         this.updatingProperty = false;
-        this.updatePropertyError = "Error updating property data" + err;
+        this.updatePropertyError = 'Error updating property data' + err;
       },
       () => {
         this.updatingProperty = false;
@@ -136,8 +136,7 @@ export class PropertiesComponent implements OnInit {
               if (existingListing) {
                 existingListing.inspections = realestateListing.inspections;
                 existingListing.scrapes.push({price: realestateListing.price, time: new Date().getTime()});
-              }
-              else {
+              } else {
                 property.listings.push(this.listingConverterService.realestateListingToListingData(realestateListing));
               }
             });
@@ -159,16 +158,16 @@ export class PropertiesComponent implements OnInit {
 
   public deleteSelectedProperty(property: PropertyData) {
     this.updatingProperty = true;
-    this.updatePropertyError = "";
+    this.updatePropertyError = '';
     this.dataService.deleteProperty(this.selectedProperty)
       .then(() => {
         this.updatingProperty = false;
         this.selectedProperty = null;
       })
       .catch((err) => {
-        console.error("Error deleting property", err);
+        console.error('Error deleting property', err);
         this.updatingProperty = false;
-        this.updatePropertyError = "Error deleting property" + err;
+        this.updatePropertyError = 'Error deleting property' + err;
       });
   }
 
@@ -181,13 +180,12 @@ export class PropertiesComponent implements OnInit {
       maxPrice = Math.max(maxPrice, scrape.price);
     });
 
-    let minPriceString = minPrice < 10000 ? `$${minPrice}` : `$${minPrice/1000}k`;
-    let maxPriceString = maxPrice < 10000 ? `$${maxPrice}` : `$${maxPrice/1000}k`;
+    let minPriceString = minPrice < 10000 ? `$${minPrice}` : `$${minPrice / 1000}k`;
+    let maxPriceString = maxPrice < 10000 ? `$${maxPrice}` : `$${maxPrice / 1000}k`;
 
     if (minPrice === maxPrice) {
       return minPriceString;
-    }
-    else {
+    } else {
       return `${minPriceString} - ${maxPriceString}`;
     }
   }
@@ -208,8 +206,7 @@ export class PropertiesComponent implements OnInit {
 
     if (formattedMinTime === formattedMaxTime) {
       return formattedMinTime;
-    }
-    else {
+    } else {
       return `${formattedMinTime} - ${formattedMaxTime}`;
     }
   }

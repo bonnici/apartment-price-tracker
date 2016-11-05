@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AuthProviders, AuthMethods, AngularFireModule } from 'angularfire2';
 import { MaterializeModule } from 'angular2-materialize';
-import "materialize-css";
+import 'materialize-css';
 import { AppComponent } from './app.component';
 import { PropertiesComponent } from './properties/properties.component';
 import { routing, appRoutingProviders }  from './app.routing';

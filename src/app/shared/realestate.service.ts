@@ -30,19 +30,18 @@ export class RealestateService {
     let id = this.stripIdFromUrl(url);
 
     if (!id) {
-      return Observable.throw("Invalid URL");
+      return Observable.throw('Invalid URL');
     }
 
     return this.http.get(this.listingUrlPrefix + id)
       .map((response) => this.extractListingData(response))
       .catch((err) => {
-        console.error("Error getting listing by url", err);
+        console.error('Error getting listing by url', err);
 
         if (err && err.status === 404) {
-          return Observable.throw("Listing not found");
-        }
-        else {
-          return Observable.throw("Error getting URL");
+          return Observable.throw('Listing not found');
+        } else {
+          return Observable.throw('Error getting URL');
         }
       });
   }
@@ -57,13 +56,12 @@ export class RealestateService {
         this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response)),
         (rentResults, buyResults) => { return rentResults.concat(buyResults); })
       .catch((err) => {
-        console.error("Error searching by bounding box", err);
+        console.error('Error searching by bounding box', err);
 
         if (err && err.status === 404) {
-          return Observable.throw("Listing not found");
-        }
-        else {
-          return Observable.throw("Error searching for properties");
+          return Observable.throw('Listing not found');
+        } else {
+          return Observable.throw('Error searching for properties');
         }
       });
   }
@@ -98,11 +96,10 @@ export class RealestateService {
 
     if (json.value) {
       return json.value;
-    }
-    else {
+    } else {
       let matches = json.display.match(/[\d,]+/);
       if (matches) {
-        var stripped = matches[0].replace(new RegExp(',', 'g'), '');
+        let stripped = matches[0].replace(new RegExp(',', 'g'), '');
         return +stripped; // Convert to number
       }
       return 0;
@@ -152,11 +149,11 @@ export class RealestateService {
   /*
    inspectionsAndAuctions: [
      {
-       dateDisplay: "Sat 05 Nov",
-       startTimeDisplay: "9:00 AM",
-       endTimeDisplay: "3:00 PM",
-       startTime: "2016-11-05T09:00:00",
-       endTime: "2016-11-05T15:00:00",
+       dateDisplay: 'Sat 05 Nov',
+       startTimeDisplay: '9:00 AM',
+       endTimeDisplay: '3:00 PM',
+       startTime: '2016-11-05T09:00:00',
+       endTime: '2016-11-05T15:00:00',
        auction: false
      }, etc
    ]
