@@ -16,6 +16,7 @@ import { RealestateService } from './shared/realestate.service';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { FirebaseDataService } from './shared/firebase-data.service';
 import { ListingConverterService } from './shared/listing-converter.service';
+import { InspectionsComponent } from './inspections/inspections.component';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -35,7 +36,8 @@ const firebaseAuthConfig = {
     PropertiesComponent,
     LoginComponent,
     AddPropertyComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    InspectionsComponent
   ],
   imports: [
     BrowserModule,

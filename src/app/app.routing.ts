@@ -4,12 +4,15 @@ import { PropertiesComponent } from './properties/properties.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AddPropertyComponent } from './add-property/add-property.component';
+import { InspectionsComponent } from './inspections/inspections.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', component: PropertiesComponent, canActivate: [AuthGuardService] },
+  { path: 'properties', component: PropertiesComponent, canActivate: [AuthGuardService] },
   { path: 'add-property', component: AddPropertyComponent, canActivate: [AuthGuardService] },
-  { path: '**', redirectTo: '' }
+  { path: 'inspections', component: InspectionsComponent, canActivate: [AuthGuardService] },
+  { path: '', redirectTo: 'properties', pathMatch: 'full' },
+  { path: '**', redirectTo: 'properties' }
 ];
 
 export const appRoutingProviders: any[] = [

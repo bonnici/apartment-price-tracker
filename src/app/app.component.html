@@ -1,8 +1,10 @@
 <nav>
   <div class="nav-wrapper">
     <a routerLink="" class="brand-logo">Apartment Price Tracker</a>
-    <ul class="right">
-      <li *ngIf="authService.authenticated"><a href="#" (click)="signOut()">Sign Out</a></li>
+    <ul *ngIf="authService.authenticated" class="right">
+      <li routerLinkActive="active"><a routerLink="properties">Properties</a></li>
+      <li routerLinkActive="active"><a routerLink="inspections">Inspections</a></li>
+      <li><a href="#" (click)="signOut()">Sign Out</a></li>
     </ul>
   </div>
 </nav>
