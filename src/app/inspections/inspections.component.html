@@ -27,7 +27,6 @@
     <table>
       <thead>
       <tr>
-        <th>Property</th>
         <th>Listing</th>
         <th>Start Time</th>
         <th>End Time</th>
@@ -35,8 +34,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let inspection of inspections">
-        <td>{{ inspection.propertyName }}</td>
-        <td><a href="{{ inspection.listingUrl }}" target="_blank">{{ inspection.listingName }}</a></td>
+        <td>
+          <a href="{{ inspection.listing.prettyUrl }}" target="_blank">{{ inspectionListing(inspection) }}</a>
+          ({{ listingBedBathParking(inspection.listing) }}, <span [className]="listingChannelClass(inspection.listing)">{{ listingPrice(inspection.listing) }}</span>)
+        </td>
         <td>{{ inspection.startTime.format() }}</td>
         <td>{{ inspection.endTime.format() }}</td>
       </tr>

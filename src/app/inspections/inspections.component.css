@@ -1,7 +1,15 @@
 .error.row {
-  color: #F44336;
+  color: #F44336; /* TODO: Move to _variables.scss */
 }
 
 #date {
   text-align: center;
+}
+
+span.buy {
+  color: #bf360c; /* TODO: Move to _variables.scss */
+}
+
+span.rent {
+  color: #006064; /* TODO: Move to _variables.scss */
 }

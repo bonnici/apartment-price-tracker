@@ -132,6 +132,9 @@ export class PropertiesComponent implements OnInit {
         .subscribe(
           (realestateListings) => {
             realestateListings.forEach((realestateListing) => {
+
+              // TODO if an existing listing can't be found, mark it as obsolete and don't show a href in the views
+
               let existingListing = this.findListing(property.listings, realestateListing.id);
               if (existingListing) {
                 existingListing.inspections = realestateListing.inspections;
@@ -171,6 +174,7 @@ export class PropertiesComponent implements OnInit {
       });
   }
 
+  // TODO use pipe from inspections page
   public getPriceRange(listing: ListingData): string {
     let minPrice = listing.scrapes[0].price;
     let maxPrice = listing.scrapes[0].price;
@@ -190,6 +194,7 @@ export class PropertiesComponent implements OnInit {
     }
   }
 
+  // TODO turn this into a pipe
   public getAvailabilityRange(listing: ListingData): string {
     let minTime = listing.scrapes[0].time;
     let maxTime = listing.scrapes[0].time;

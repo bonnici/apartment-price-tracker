@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseDataService, PropertyData } from '../shared/firebase-data.service';
+import { FirebaseDataService, PropertyData, ListingData } from '../shared/firebase-data.service';
 import 'jquery';
 import * as moment from 'moment';
 
@@ -8,9 +8,8 @@ declare class DatePickerContext {
 }
 
 class Inspection {
-  public propertyName: string;
-  public listingName: string;
-  public listingUrl: string;
+  public property: PropertyData;
+  public listing: ListingData;
   public startTime: any; // moment
   public endTime: any; // moment
 }
@@ -54,21 +53,65 @@ export class InspectionsComponent implements OnInit {
 
     this.properties.forEach((property) => {
       property.listings.forEach((listing) => {
-        (listing.inspections || []).forEach((inspection) => {
-          if (moment(inspection.startTime).startOf('day').isSame(moment(this.date).startOf('day'))) {
-            filteredInspections.push({
-              propertyName: property.propertyName,
-              listingName: listing.streetAddress,
-              listingUrl: listing.prettyUrl,
-              startTime: moment(inspection.startTime),
-              endTime: moment(inspection.endTime)
-            });
-          }
-        });
+        (listing.inspections || [])
+          .forEach((inspection) => {
+            if (moment(inspection.startTime).startOf('day').isSame(moment(this.date).startOf('day'))) {
+              filteredInspections.push({
+                property: property,
+                listing: listing,
+                startTime: moment(inspection.startTime),
+                endTime: moment(inspection.endTime)
+              });
+            }
+          });
       });
     });
 
+    filteredInspections.sort((a: Inspection, b: Inspection) => {
+      if (a.property.propertyName !== b.property.propertyName) {
+        return a.property.propertyName < b.property.propertyName ? -1 : 1;
+      } else {
+        return a.startTime.isBefore(b.startTime) ? -1 : 1;
+      }
+    });
+
     this.inspections = filteredInspections;
+  }
+
+  // TODO turn this into a pipe
+  public inspectionListing(inspection: Inspection) {
+    let apt = '';
+    let matches = inspection.listing.streetAddress.match(/^([\w\d]+)\//);
+    if (matches) {
+      apt = `${matches[1]}/`;
+    }
+
+    return `${apt}${inspection.property.propertyName}`;
+  }
+
+  // TODO turn this into a pipe and change the properties page to use it
+  public listingBedBathParking(listing: ListingData) {
+    return `${listing.beds}/${listing.beds}/${listing.parking}`;
+  }
+
+  // TODO turn this into a pipe and change the properties page to use it
+  public listingPrice(listing: ListingData) {
+    let firstPrice = listing.scrapes[0].price;
+    let lastPrice = listing.scrapes.slice(-1)[0].price;
+
+    let firstPriceString = firstPrice < 10000 ? `$${firstPrice}` : `$${firstPrice / 1000}k`;
+    let lastPriceString = lastPrice < 10000 ? `$${lastPrice}` : `$${lastPrice / 1000}k`;
+
+    if (firstPrice === lastPrice) {
+      return firstPriceString;
+    } else {
+      return `${firstPriceString} - ${lastPriceString}`;
+    }
+  }
+
+  // TODO turn this into a pipe and change the properties page to use it
+  public listingChannelClass(listing: ListingData) {
+    return listing.channel === 'buy' ? 'buy' : 'rent';
   }
 
   // Need to set up date picker this way because the materialize way is not very customizable

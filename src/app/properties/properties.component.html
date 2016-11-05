@@ -38,7 +38,7 @@
 
   <div class="row">
     <div class="center-align col s12">
-      <a class="waves-light btn" routerLink="add-property">Watch new property</a>
+      <a class="waves-light btn" routerLink="/add-property">Watch new property</a>
       <button class="waves-light btn" (click)="refreshAllProperties()">Refresh All Properties</button>
     </div>
   </div>
@@ -117,6 +117,7 @@
           <tr *ngFor="let listing of selectedProperty.listings">
             <td><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
             <td>{{ listing.beds }}/{{ listing.baths }}/{{ listing.parking }}</td>
+            <!-- TODO use pipe from inspections page -->
             <td [class.rent]="listing.channel === 'rent' || !listing.channel" [class.buy]="listing.channel === 'buy'">{{ getPriceRange(listing) }}</td>
             <td>{{ getAvailabilityRange(listing) }}</td>
           </tr>
