@@ -1,9 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseDataService, PropertyData } from '../shared/firebase-data.service';
 import 'jquery';
+import * as moment from 'moment';
 
 declare class DatePickerContext {
   public select: number;
+}
+
+class Inspection {
+  public propertyName: string;
+  public listingName: string;
+  public listingUrl: string;
+  public startTime: any; // moment
+  public endTime: any; // moment
 }
 
 @Component({
@@ -16,6 +25,7 @@ export class InspectionsComponent implements OnInit {
   public propertiesLoading = false;
   public getPropertiesError = '';
   public date: Date = new Date();
+  public inspections: Inspection[] = [];
 
   constructor(private dataService: FirebaseDataService) { }
 
@@ -28,8 +38,6 @@ export class InspectionsComponent implements OnInit {
         this.propertiesLoading = false;
         this.properties = properties;
         this.getPropertiesError = '';
-
-        console.log('loaded', properties);
         this.filterInspections();
       },
       (err) => {
@@ -42,7 +50,25 @@ export class InspectionsComponent implements OnInit {
   }
 
   public filterInspections() {
-    console.log('filtering', this.date);
+    let filteredInspections: Inspection[] = [];
+
+    this.properties.forEach((property) => {
+      property.listings.forEach((listing) => {
+        (listing.inspections || []).forEach((inspection) => {
+          if (moment(inspection.startTime).startOf('day').isSame(moment(this.date).startOf('day'))) {
+            filteredInspections.push({
+              propertyName: property.propertyName,
+              listingName: listing.streetAddress,
+              listingUrl: listing.prettyUrl,
+              startTime: moment(inspection.startTime),
+              endTime: moment(inspection.endTime)
+            });
+          }
+        });
+      });
+    });
+
+    this.inspections = filteredInspections;
   }
 
   // Need to set up date picker this way because the materialize way is not very customizable
