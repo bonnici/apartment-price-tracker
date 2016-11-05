@@ -3,11 +3,11 @@ import { AuthService } from './shared/auth.service';
 
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/zip';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/take';
-import 'rxjs/add/operator/concat';
 
 @Component({
   selector: 'app-root',

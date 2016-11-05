@@ -15,6 +15,7 @@ export class ListingConverterService {
     listingData.beds = listing.beds;
     listingData.baths = listing.baths;
     listingData.parking = listing.parking;
+    listingData.inspections = listing.inspections;
 
     let listingScrape = new ListingScrape();
     listingScrape.price = listing.price;

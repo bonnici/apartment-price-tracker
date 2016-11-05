@@ -59,7 +59,7 @@ export class PropertiesComponent implements OnInit {
     Observable.forkJoin(observables).subscribe(
       () => {},
       (err) => {
-        console.log("error", err);
+        console.error("error", err);
         this.refreshAllPropertiesError = "Error refreshing properties: " + err;
         this.refreshingAllProperties = false;
       },
@@ -134,6 +134,7 @@ export class PropertiesComponent implements OnInit {
             realestateListings.forEach((realestateListing) => {
               let existingListing = this.findListing(property.listings, realestateListing.id);
               if (existingListing) {
+                existingListing.inspections = realestateListing.inspections;
                 existingListing.scrapes.push({price: realestateListing.price, time: new Date().getTime()});
               }
               else {

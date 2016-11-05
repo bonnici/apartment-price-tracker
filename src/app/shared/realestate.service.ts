@@ -15,6 +15,7 @@ export class Listing {
   public baths: number;
   public parking: number;
   public price: number;
+  public inspections: any[];
 }
 
 @Injectable()
@@ -51,11 +52,10 @@ export class RealestateService {
     let rentSearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'rent');
     let buySearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'buy');
 
-    //var rentResults = this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response));
-    //var buyResults = this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response));
-
-    return this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response))
-      .concat(this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response)))
+    return Observable.zip(
+        this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response)),
+        this.http.get(this.searchUrlPrefix + buySearchQuery).map((response) => this.extractSearchResults(response)),
+        (rentResults, buyResults) => { return rentResults.concat(buyResults); })
       .catch((err) => {
         console.error("Error searching by bounding box", err);
 
@@ -66,21 +66,6 @@ export class RealestateService {
           return Observable.throw("Error searching for properties");
         }
       });
-
-    /*
-    return this.http.get(this.searchUrlPrefix + searchQuery)
-      .map((response) => this.extractSearchResults(response))
-      .catch((err) => {
-        console.error("Error searching by bounding box", err);
-
-        if (err && err.status === 404) {
-          return Observable.throw("Listing not found");
-        }
-        else {
-          return Observable.throw("Error searching for properties");
-        }
-      });
-      */
   }
 
   private extractListingData(res: Response): Listing {
@@ -101,7 +86,8 @@ export class RealestateService {
       beds: json.features.general ? json.features.general.bedrooms : 0,
       baths: json.features.general ? json.features.general.bathrooms : 0,
       parking: json.features.general ? json.features.general.parkingSpaces : 0,
-      price: this.parsePrice(json.price)
+      price: this.parsePrice(json.price),
+      inspections: this.parseInspections(json.inspectionsAndAuctions)
     };
   }
 
@@ -161,5 +147,34 @@ export class RealestateService {
     };
 
     return JSON.stringify(query);
+  }
+
+  /*
+   inspectionsAndAuctions: [
+     {
+       dateDisplay: "Sat 05 Nov",
+       startTimeDisplay: "9:00 AM",
+       endTimeDisplay: "3:00 PM",
+       startTime: "2016-11-05T09:00:00",
+       endTime: "2016-11-05T15:00:00",
+       auction: false
+     }, etc
+   ]
+   */
+  private parseInspections(inspectionsAndAuctions: any) {
+    if (!inspectionsAndAuctions) {
+      return [];
+    }
+
+    return inspectionsAndAuctions
+      .filter((data) => {
+        return !data.auction;
+      })
+      .map((data) => {
+        return {
+          startTime: data.startTime,
+          endTime: data.endTime,
+        };
+      });
   }
 }

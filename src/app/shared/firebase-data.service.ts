@@ -18,6 +18,7 @@ export class ListingData {
   public beds: number;
   public baths: number;
   public parking: number;
+  public inspections: any[];
   public scrapes: ListingScrape[];
 }
 
