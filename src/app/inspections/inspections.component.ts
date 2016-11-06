@@ -7,7 +7,7 @@ declare class DatePickerContext {
   public select: number;
 }
 
-class Inspection {
+export class Inspection {
   public property: PropertyData;
   public listing: ListingData;
   public startTime: any; // moment
@@ -76,42 +76,6 @@ export class InspectionsComponent implements OnInit {
     });
 
     this.inspections = filteredInspections;
-  }
-
-  // TODO turn this into a pipe
-  public inspectionListing(inspection: Inspection) {
-    let apt = '';
-    let matches = inspection.listing.streetAddress.match(/^([\w\d]+)\//);
-    if (matches) {
-      apt = `${matches[1]}/`;
-    }
-
-    return `${apt}${inspection.property.propertyName}`;
-  }
-
-  // TODO turn this into a pipe and change the properties page to use it
-  public listingBedBathParking(listing: ListingData) {
-    return `${listing.beds}/${listing.beds}/${listing.parking}`;
-  }
-
-  // TODO turn this into a pipe and change the properties page to use it
-  public listingPrice(listing: ListingData) {
-    let firstPrice = listing.scrapes[0].price;
-    let lastPrice = listing.scrapes.slice(-1)[0].price;
-
-    let firstPriceString = firstPrice < 10000 ? `$${firstPrice}` : `$${firstPrice / 1000}k`;
-    let lastPriceString = lastPrice < 10000 ? `$${lastPrice}` : `$${lastPrice / 1000}k`;
-
-    if (firstPrice === lastPrice) {
-      return firstPriceString;
-    } else {
-      return `${firstPriceString} - ${lastPriceString}`;
-    }
-  }
-
-  // TODO turn this into a pipe and change the properties page to use it
-  public listingChannelClass(listing: ListingData) {
-    return listing.channel === 'buy' ? 'buy' : 'rent';
   }
 
   // Need to set up date picker this way because the materialize way is not very customizable

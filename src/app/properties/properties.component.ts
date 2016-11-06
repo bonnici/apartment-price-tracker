@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseDataService, PropertyData, ListingData } from '../shared/firebase-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import * as moment from 'moment';
-import 'moment-timezone';
 import { RealestateService } from '../shared/realestate.service';
 import { ListingConverterService } from '../shared/listing-converter.service';
 import { Observable } from 'rxjs/Observable';
@@ -172,48 +170,6 @@ export class PropertiesComponent implements OnInit {
         this.updatingProperty = false;
         this.updatePropertyError = 'Error deleting property' + err;
       });
-  }
-
-  // TODO use pipe from inspections page
-  public getPriceRange(listing: ListingData): string {
-    let minPrice = listing.scrapes[0].price;
-    let maxPrice = listing.scrapes[0].price;
-
-    listing.scrapes.forEach((scrape) => {
-      minPrice = Math.min(minPrice, scrape.price);
-      maxPrice = Math.max(maxPrice, scrape.price);
-    });
-
-    let minPriceString = minPrice < 10000 ? `$${minPrice}` : `$${minPrice / 1000}k`;
-    let maxPriceString = maxPrice < 10000 ? `$${maxPrice}` : `$${maxPrice / 1000}k`;
-
-    if (minPrice === maxPrice) {
-      return minPriceString;
-    } else {
-      return `${minPriceString} - ${maxPriceString}`;
-    }
-  }
-
-  // TODO turn this into a pipe
-  public getAvailabilityRange(listing: ListingData): string {
-    let minTime = listing.scrapes[0].time;
-    let maxTime = listing.scrapes[0].time;
-
-    listing.scrapes.forEach((scrape) => {
-      minTime = Math.min(minTime, scrape.time);
-      maxTime = Math.max(maxTime, scrape.time);
-    });
-
-    let minTimeMoment: any = moment(minTime); // workaround to figuring out moment-timezone typings
-    let maxTimeMoment: any = moment(maxTime);
-    let formattedMinTime = minTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
-    let formattedMaxTime = maxTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
-
-    if (formattedMinTime === formattedMaxTime) {
-      return formattedMinTime;
-    } else {
-      return `${formattedMinTime} - ${formattedMaxTime}`;
-    }
   }
 
   private findListing(listings: ListingData[], listingId: string) {

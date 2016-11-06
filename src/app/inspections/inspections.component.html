@@ -21,7 +21,6 @@
   </div>
 </div>
 
-
 <div *ngIf="inspections.length > 0" class="row">
   <div class="col s12">
     <table>
@@ -35,8 +34,8 @@
       <tbody>
       <tr *ngFor="let inspection of inspections">
         <td>
-          <a href="{{ inspection.listing.prettyUrl }}" target="_blank">{{ inspectionListing(inspection) }}</a>
-          ({{ listingBedBathParking(inspection.listing) }}, <span [className]="listingChannelClass(inspection.listing)">{{ listingPrice(inspection.listing) }}</span>)
+          <a href="{{ inspection.listing.prettyUrl }}" target="_blank">{{ inspection | inspectionListing }}</a>
+          ({{ inspection.listing | bedBathParking }}, <span [className]="inspection.listing | listingChannelClass">{{ inspection.listing | listingPrice }}</span>)
         </td>
         <td>{{ inspection.startTime.format("h:mm a") }}</td>
         <td>{{ inspection.endTime.format("h:mm a") }}</td>

@@ -17,6 +17,11 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { FirebaseDataService } from './shared/firebase-data.service';
 import { ListingConverterService } from './shared/listing-converter.service';
 import { InspectionsComponent } from './inspections/inspections.component';
+import { InspectionListingPipe } from './shared/inspection-listing.pipe';
+import { BedBathParkingPipe } from './shared/bed-bath-parking.pipe';
+import { ListingChannelClassPipe } from './shared/listing-channel-class.pipe';
+import { ListingPricePipe } from './shared/listing-price.pipe';
+import { ListingAvailabilityPipe } from './shared/listing-availability.pipe';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
@@ -30,6 +35,11 @@ const firebaseAuthConfig = {
   method: AuthMethods.Popup
 };
 
+// TODO: Do something about re-used/changed listings - append bed/bath/parking to listing ID?
+//   e.g. http://www.realestate.com.au/property-apartment-qld-west+end-419577554
+//        http://www.realestate.com.au/property-apartment-qld-west+end-419592734
+// TODO: See if AoT works
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +47,12 @@ const firebaseAuthConfig = {
     LoginComponent,
     AddPropertyComponent,
     LoadingSpinnerComponent,
-    InspectionsComponent
+    InspectionsComponent,
+    InspectionListingPipe,
+    BedBathParkingPipe,
+    ListingChannelClassPipe,
+    ListingPricePipe,
+    ListingAvailabilityPipe
   ],
   imports: [
     BrowserModule,
