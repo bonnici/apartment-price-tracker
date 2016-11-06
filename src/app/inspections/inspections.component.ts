@@ -17,7 +17,7 @@ class Inspection {
 @Component({
   selector: 'app-inspections',
   templateUrl: './inspections.component.html',
-  styleUrls: ['./inspections.component.css']
+  styleUrls: ['./inspections.component.scss']
 })
 export class InspectionsComponent implements OnInit {
   public properties: PropertyData[];

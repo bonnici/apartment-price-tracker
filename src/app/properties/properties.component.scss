@@ -1,9 +1,11 @@
+@import "../../variables";
+
 table.property-list tbody tr {
   cursor: pointer;
 }
 
 .error.row {
-  color: #F44336; /* TODO: Move to _variables.scss */
+  color: $error-text-color;
 }
 
 table.properties tbody tr {
@@ -20,9 +22,9 @@ table.listings td, table.properties td {
 }
 
 table.listings td.buy {
-  color: #bf360c; /* TODO: Move to _variables.scss */
+  color: $buy-text-color;
 }
 
 table.listings td.rent {
-  color: #006064; /* TODO: Move to _variables.scss */
+  color: $rent-text-color;
 }

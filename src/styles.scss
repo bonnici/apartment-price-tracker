@@ -1,5 +1,4 @@
-$primary-color: #3F51B5 !default;
-$secondary-color: #448AFF !default;
+@import "variables";
 
 $roboto-font-path: "../node_modules/materialize-css/fonts/roboto/";
 @import "../node_modules/materialize-css/sass/materialize";

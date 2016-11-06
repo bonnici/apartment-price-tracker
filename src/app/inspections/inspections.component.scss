@@ -1,0 +1,17 @@
+@import "../../variables";
+
+.error.row {
+  color: $error-text-color;
+}
+
+#date {
+  text-align: center;
+}
+
+span.buy {
+  color: $buy-text-color;
+}
+
+span.rent {
+  color: $rent-text-color;
+}

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
-  styleUrls: ['./properties.component.css']
+  styleUrls: ['./properties.component.scss']
 })
 export class PropertiesComponent implements OnInit {
   public properties: PropertyData[];
