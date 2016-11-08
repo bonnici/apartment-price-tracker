@@ -114,8 +114,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let listing of selectedProperty.listings">
-            <td><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
+          <tr *ngFor="let listing of sortedListings">
+            <td *ngIf="listing.current"><a target="_blank" href="{{ listing.prettyUrl }}">{{ listing.streetAddress }}</a></td>
+            <td *ngIf="!listing.current">{{ listing.streetAddress }}</td>
             <td>{{ listing | bedBathParking }}</td>
             <td [className]="listing | listingChannelClass">{{ listing | listingPrice }}</td>
             <td>{{ listing | listingAvailability }}</td>

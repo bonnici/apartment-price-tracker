@@ -55,7 +55,7 @@ export class InspectionsComponent implements OnInit {
       property.listings.forEach((listing) => {
         (listing.inspections || [])
           .forEach((inspection) => {
-            if (moment(inspection.startTime).startOf('day').isSame(moment(this.date).startOf('day'))) {
+            if (listing.current && moment(inspection.startTime).startOf('day').isSame(moment(this.date).startOf('day'))) {
               filteredInspections.push({
                 property: property,
                 listing: listing,

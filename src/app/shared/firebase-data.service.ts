@@ -20,6 +20,7 @@ export class ListingData {
   public parking: number;
   public inspections: any[];
   public scrapes: ListingScrape[];
+  public current: boolean;
 }
 
 export class PropertyData {

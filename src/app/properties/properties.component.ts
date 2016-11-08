@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FirebaseDataService, PropertyData, ListingData } from '../shared/firebase-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RealestateService } from '../shared/realestate.service';
+import { RealestateService, Listing } from '../shared/realestate.service';
 import { ListingConverterService } from '../shared/listing-converter.service';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +15,7 @@ export class PropertiesComponent implements OnInit {
   public propertiesLoading = false;
   public getPropertiesError = '';
   public selectedProperty: PropertyData;
+  public sortedListings: ListingData[];
   public updatePropertyForm: FormGroup;
   public updatingProperty = false;
   public updatePropertyError: string;
@@ -67,6 +68,12 @@ export class PropertiesComponent implements OnInit {
 
   public propertySelected(property: PropertyData) {
     this.selectedProperty = property;
+    this.sortedListings = property.listings.sort((a, b) => {
+      if (a.current !== b.current) {
+        return a.current ? -1 : 1;
+      }
+      return (a.beds + a.baths) - (b.beds + b.baths);
+    });
     this.updatePropertyForm.patchValue({ propertyName: property.propertyName, propertyNotes: property.propertyNotes });
   }
 
@@ -129,16 +136,20 @@ export class PropertiesComponent implements OnInit {
       this.realestateService.findListingsByBoundingBox(property.latStart, property.latEnd, property.longStart, property.longEnd)
         .subscribe(
           (realestateListings) => {
+            property.listings.forEach((listing) => {
+              listing.current = false;
+            });
+
             realestateListings.forEach((realestateListing) => {
-
-              // TODO if an existing listing can't be found, mark it as obsolete and don't show a href in the views
-
-              let existingListing = this.findListing(property.listings, realestateListing.id);
+              let existingListing = this.findListing(property.listings, realestateListing);
               if (existingListing) {
                 existingListing.inspections = realestateListing.inspections;
                 existingListing.scrapes.push({price: realestateListing.price, time: new Date().getTime()});
+                existingListing.current = true;
               } else {
-                property.listings.push(this.listingConverterService.realestateListingToListingData(realestateListing));
+                let newListing = this.listingConverterService.realestateListingToListingData(realestateListing);
+                newListing.current = true;
+                property.listings.push(newListing);
               }
             });
 
@@ -172,11 +183,12 @@ export class PropertiesComponent implements OnInit {
       });
   }
 
-  private findListing(listings: ListingData[], listingId: string) {
+  private findListing(listings: ListingData[], realEstateListing: Listing) {
     let foundListing: ListingData = null;
 
     listings.forEach((listing) => {
-      if (listing.id === listingId) {
+      if (listing.id === realEstateListing.id && listing.beds === realEstateListing.beds
+          && listing.baths === realEstateListing.baths && listing.parking === realEstateListing.parking) {
         foundListing = listing;
       }
     });
