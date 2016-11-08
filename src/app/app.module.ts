@@ -35,10 +35,7 @@ const firebaseAuthConfig = {
   method: AuthMethods.Popup
 };
 
-// TODO: Do something about re-used/changed listings - append bed/bath/parking to listing ID?
-//   e.g. http://www.realestate.com.au/property-apartment-qld-west+end-419577554
-//        http://www.realestate.com.au/property-apartment-qld-west+end-419592734
-// TODO: See if AoT works
+// TODO: See if AoT and lazy-loading works when finalized in angular-cli
 
 @NgModule({
   declarations: [
