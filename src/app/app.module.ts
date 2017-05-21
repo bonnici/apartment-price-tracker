@@ -2,12 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AuthProviders, AuthMethods, AngularFireModule } from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 import { MaterializeModule } from 'angular2-materialize';
-import 'materialize-css';
 import { AppComponent } from './app.component';
 import { PropertiesComponent } from './properties/properties.component';
-import { routing, appRoutingProviders }  from './app.routing';
+import { routing, appRoutingProviders } from './app.routing';
 import { LoginComponent } from './login/login.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { AuthService } from './shared/auth.service';
@@ -22,18 +23,8 @@ import { BedBathParkingPipe } from './shared/bed-bath-parking.pipe';
 import { ListingChannelClassPipe } from './shared/listing-channel-class.pipe';
 import { ListingPricePipe } from './shared/listing-price.pipe';
 import { ListingAvailabilityPipe } from './shared/listing-availability.pipe';
+import { environment } from '../environments/environment';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyAEkS5Heb7Hv0JbmOF9_VlhkCl64FhGyIo',
-  authDomain: 'apartment-price-tracker.firebaseapp.com',
-  databaseURL: 'https://apartment-price-tracker.firebaseio.com',
-  storageBucket: 'apartment-price-tracker.appspot.com',
-};
-
-const firebaseAuthConfig = {
-  provider: AuthProviders.Google,
-  method: AuthMethods.Popup
-};
 
 // TODO: See if AoT and lazy-loading works when finalized in angular-cli
 
@@ -57,7 +48,9 @@ const firebaseAuthConfig = {
     ReactiveFormsModule,
     HttpModule,
     routing,
-    AngularFireModule.initializeApp(firebaseConfig, firebaseAuthConfig),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
     MaterializeModule
   ],
   providers: [

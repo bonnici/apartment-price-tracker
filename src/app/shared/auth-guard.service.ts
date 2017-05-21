@@ -9,7 +9,7 @@ export class AuthGuardService implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean>|boolean {
-    return this.auth.firebaseAuth
+    return this.auth.authState
       .take(1)
       .map(authState => !!authState)
       .do(authenticated => {

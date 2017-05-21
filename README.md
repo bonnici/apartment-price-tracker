@@ -3,7 +3,7 @@
 Web app to track the price of apartments over time. Uses the realestate.com.au API for prices and
 Firebase for auth/db/hosting. The site is live at [apartment-price-tracker.firebaseapp.com](https://apartment-price-tracker.firebaseapp.com).
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.17.
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.4.
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

@@ -1,6 +1,6 @@
 import { Component, ElementRef } from '@angular/core';
 import { RealestateService, Listing } from '../shared/realestate.service';
-import { ViewChild } from '@angular/core/src/metadata/di';
+import { ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FirebaseDataService, PropertyData } from '../shared/firebase-data.service';
 import { Router } from '@angular/router';
