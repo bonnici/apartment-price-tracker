@@ -5,7 +5,7 @@ import { ListingData, ListingScrape } from './firebase-data.service';
 @Injectable()
 export class ListingConverterService {
   public realestateListingToListingData(listing: Listing): ListingData {
-    let listingData = new ListingData();
+    const listingData = new ListingData();
     listingData.id = listing.id;
     listingData.prettyUrl = listing.prettyUrl;
     listingData.channel = listing.channel;
@@ -17,7 +17,7 @@ export class ListingConverterService {
     listingData.parking = listing.parking;
     listingData.inspections = listing.inspections;
 
-    let listingScrape = new ListingScrape();
+    const listingScrape = new ListingScrape();
     listingScrape.price = listing.price;
     listingScrape.time = new Date().getTime();
     listingData.scrapes = [listingScrape];

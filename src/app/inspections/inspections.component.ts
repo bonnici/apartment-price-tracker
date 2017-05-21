@@ -49,7 +49,7 @@ export class InspectionsComponent implements OnInit {
   }
 
   public filterInspections() {
-    let filteredInspections: Inspection[] = [];
+    const filteredInspections: Inspection[] = [];
 
     this.properties.forEach((property) => {
       property.listings.forEach((listing) => {
@@ -80,8 +80,8 @@ export class InspectionsComponent implements OnInit {
 
   // Need to set up date picker this way because the materialize way is not very customizable
   private setupDatePicker() {
-    let dateInput: any = jQuery('#date');
-    let pickadate = dateInput.pickadate({
+    const dateInput: any = jQuery('#date');
+    const pickadate = dateInput.pickadate({
       format: 'dd/mm/yyyy',
       selectMonths: true,
       selectYears: 2,
@@ -95,7 +95,7 @@ export class InspectionsComponent implements OnInit {
       }
     });
 
-    let picker = pickadate.pickadate('picker');
+    const picker = pickadate.pickadate('picker');
     picker.set('select', this.date);
   }
 }

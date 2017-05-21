@@ -48,7 +48,7 @@ export class PropertiesComponent implements OnInit {
   }
 
   public refreshAllProperties() {
-    let observables = [];
+    const observables = [];
     this.properties.forEach((property) => {
       observables.push(this.refreshProperty(property));
     });
@@ -141,13 +141,13 @@ export class PropertiesComponent implements OnInit {
             });
 
             realestateListings.forEach((realestateListing) => {
-              let existingListing = this.findListing(property.listings, realestateListing);
+              const existingListing = this.findListing(property.listings, realestateListing);
               if (existingListing) {
                 existingListing.inspections = realestateListing.inspections;
                 existingListing.scrapes.push({price: realestateListing.price, time: new Date().getTime()});
                 existingListing.current = true;
               } else {
-                let newListing = this.listingConverterService.realestateListingToListingData(realestateListing);
+                const newListing = this.listingConverterService.realestateListingToListingData(realestateListing);
                 newListing.current = true;
                 property.listings.push(newListing);
               }

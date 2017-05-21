@@ -27,7 +27,7 @@ export class RealestateService {
   constructor(private http: Http) { }
 
   public findListingByUrl(url: string): Observable<Listing> {
-    let id = this.stripIdFromUrl(url);
+    const id = this.stripIdFromUrl(url);
 
     if (!id) {
       return Observable.throw('Invalid URL');
@@ -48,8 +48,8 @@ export class RealestateService {
 
   // Returns a max of 50 results
   public findListingsByBoundingBox(latStart: number, latEnd: number, longStart: number, longEnd: number): Observable<Listing[]> {
-    let rentSearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'rent');
-    let buySearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'buy');
+    const rentSearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'rent');
+    const buySearchQuery = this.generateSearchQuery(latStart, latEnd, longStart, longEnd, 'buy');
 
     return Observable.zip(
         this.http.get(this.searchUrlPrefix + rentSearchQuery).map((response) => this.extractSearchResults(response)),
@@ -67,7 +67,7 @@ export class RealestateService {
   }
 
   private extractListingData(res: Response): Listing {
-    let json = res.json();
+    const json = res.json();
     return this.jsonToListing(json);
   }
 
@@ -97,9 +97,9 @@ export class RealestateService {
     if (json.value) {
       return json.value;
     } else {
-      let matches = json.display.match(/[\d,]+/);
+      const matches = json.display.match(/[\d,]+/);
       if (matches) {
-        let stripped = matches[0].replace(new RegExp(',', 'g'), '');
+        const stripped = matches[0].replace(new RegExp(',', 'g'), '');
         return +stripped; // Convert to number
       }
       return 0;
@@ -107,7 +107,7 @@ export class RealestateService {
   }
 
   private extractSearchResults(res: Response): Listing[] {
-    let json = res.json();
+    const json = res.json();
 
     let listings = [];
     if (json.tieredResults && json.tieredResults.length > 0 && json.tieredResults[0].results && json.tieredResults[0].results.length > 0) {
@@ -122,7 +122,7 @@ export class RealestateService {
       return null;
     }
 
-    let matches = url.match(/\d+$/);
+    const matches = url.match(/\d+$/);
     if (matches) {
       return matches[0];
     }
@@ -131,7 +131,7 @@ export class RealestateService {
   }
 
   private generateSearchQuery(latStart: number, latEnd: number, longStart: number, longEnd: number, channel: string): string {
-    let query = {
+    const query = {
       channel: channel,
       filters: {
         'surroundingSuburbs': false,

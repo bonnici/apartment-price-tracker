@@ -59,7 +59,7 @@ export class AddPropertyComponent {
   }
 
   public addProperty() {
-    let propertyData = new PropertyData();
+    const propertyData = new PropertyData();
     propertyData.propertyName = this.addPropertyForm.value.propertyName;
     propertyData.propertyNotes = this.addPropertyForm.value.propertyNotes;
     propertyData.latStart = this.latStart;
@@ -105,22 +105,22 @@ export class AddPropertyComponent {
   }
 
   private get latStart() {
-    let latValues = this.latSlider.nativeElement.noUiSlider.get();
+    const latValues = this.latSlider.nativeElement.noUiSlider.get();
     return +latValues[0];
   }
 
   private get latEnd() {
-    let latValues = this.latSlider.nativeElement.noUiSlider.get();
+    const latValues = this.latSlider.nativeElement.noUiSlider.get();
     return +latValues[1];
   }
 
   private get longStart() {
-    let longValues = this.longSlider.nativeElement.noUiSlider.get();
+    const longValues = this.longSlider.nativeElement.noUiSlider.get();
     return +longValues[0];
   }
 
   private get longEnd() {
-    let longValues = this.longSlider.nativeElement.noUiSlider.get();
+    const longValues = this.longSlider.nativeElement.noUiSlider.get();
     return +longValues[1];
   }
 
@@ -136,7 +136,7 @@ export class AddPropertyComponent {
       slider.nativeElement.noUiSlider.destroy();
     }
 
-    let rounded = Math.round(value * 10000) / 10000;
+    const rounded = Math.round(value * 10000) / 10000;
 
     noUiSlider.create(slider.nativeElement, {
       start: [rounded - 0.0002, rounded + 0.0002],

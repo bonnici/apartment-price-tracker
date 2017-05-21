@@ -6,13 +6,13 @@ import 'moment-timezone';
 @Pipe({name: 'listingAvailability'})
 export class ListingAvailabilityPipe implements PipeTransform {
   transform(listing: ListingData): string {
-    let minTime = listing.scrapes[0].time;
-    let maxTime = listing.scrapes.slice(-1)[0].time;
+    const minTime = listing.scrapes[0].time;
+    const maxTime = listing.scrapes.slice(-1)[0].time;
 
-    let minTimeMoment: any = moment(minTime); // workaround to figuring out moment-timezone typings
-    let maxTimeMoment: any = moment(maxTime);
-    let formattedMinTime = minTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
-    let formattedMaxTime = maxTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
+    const minTimeMoment: any = moment(minTime); // workaround to figuring out moment-timezone typings
+    const maxTimeMoment: any = moment(maxTime);
+    const formattedMinTime = minTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
+    const formattedMaxTime = maxTimeMoment.tz('Australia/Brisbane').format('DD/MM/YYYY');
 
     if (formattedMinTime === formattedMaxTime) {
       return formattedMinTime;
